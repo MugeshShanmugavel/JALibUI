@@ -1,0 +1,7 @@
+{
+  "name": "JALib",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
