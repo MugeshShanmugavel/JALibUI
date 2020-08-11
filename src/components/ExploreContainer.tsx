@@ -1,17 +1,37 @@
 import React from 'react';
 import './ExploreContainer.css';
+import { Books } from '../Models/Books';
+import { IonItem, IonList, IonLabel } from '@ionic/react';
 
 interface ContainerProps {
-  name: string;
+  books: any;
 }
 
-const ExploreContainer: React.FC<ContainerProps> = ({ name }) => {
+const ExploreContainer: React.FC<ContainerProps> = ({ books }) => {
   return (
     <div className="container">
-      <strong>{name}</strong>
-      <p>Explore <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+      <div>
+        {
+          books.map((data:any, index:any) => (
+          <IonItem>
+            <IonLabel key ={index}>
+              {data.author}
+            </IonLabel>
+          </IonItem>
+          ))
+        }
+      </div>
     </div>
   );
 };
 
 export default ExploreContainer;
+
+
+{/* <div className="card">
+        <i>{books.title}</i>
+          <div className="card-body">
+                <h5 className="card-title">{books.title}</h5>
+                <h6 className="card-subtitle mb-2 text-muted">{books.author}</h6>
+          </div>
+      </div> */}

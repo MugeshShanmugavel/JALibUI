@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import {
   IonApp,
@@ -7,7 +7,9 @@ import {
   IonRouterOutlet,
   IonTabBar,
   IonTabButton,
-  IonTabs
+  IonTabs,
+  IonAlert,
+  IonHeader
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { ellipse, square, triangle } from 'ionicons/icons';
@@ -34,8 +36,13 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
+/*Cookie Servce*/ 
+import Cookies from 'universal-cookie'
+
+
 const App: React.FC = () => (
   <IonApp>
+    {GetAlert()} 
     <IonReactRouter>
       <IonTabs>
         <IonRouterOutlet>
@@ -47,20 +54,79 @@ const App: React.FC = () => (
         <IonTabBar slot="bottom">
           <IonTabButton tab="tab1" href="/tab1">
             <IonIcon icon={triangle} />
-            <IonLabel>Tab 1</IonLabel>
+            <IonLabel>Available Books</IonLabel>
           </IonTabButton>
           <IonTabButton tab="tab2" href="/tab2">
             <IonIcon icon={ellipse} />
-            <IonLabel>Tab 2</IonLabel>
+            <IonLabel>My Books</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="tab3" href="/tab3">
+          {/* <IonTabButton tab="tab3" href="/tab3">
             <IonIcon icon={square} />
             <IonLabel>Tab 3</IonLabel>
-          </IonTabButton>
+          </IonTabButton> */}
         </IonTabBar>
       </IonTabs>
     </IonReactRouter>
   </IonApp>
 );
+function GetCookie(){
+  debugger;
+  const cookie = new Cookies();
+  var emailId = cookie.get('emailId');
+  if(emailId == undefined || emailId.length == 0){
+    console.log("Cookie is not there")
+    return true;
+  }
+  return false;
+}
+function CheckCookie(){
+  debugger;
+  const cookie = new Cookies();
+  var emailId = cookie.get('emailId');
+  if(emailId == undefined || emailId.length == 0){
+    console.log("Cookie is not there")
+    return true;
+  }
+  return false;
+}
 
+function GetAlert(){
+  return (<IonAlert
+        isOpen={GetCookie()}
+        header={'Enter Login Details!!'}
+        backdropDismiss = {false}
+        onDidDismiss = {()=> (true)}
+        onWillDismiss = {() => OnDismiss()}
+        inputs={[
+          {
+            name:'EmailId',
+            type:'email',
+            placeholder:'Enter your mail id'
+          }
+        ]}
+        buttons={[
+          {
+            text:'OK',
+            handler: (data) => {
+              debugger;
+              if(data.EmailId.length != 0){
+              const cookie = new Cookies();
+              cookie.set("emailId", data.EmailId);
+              }
+              else{
+                GetAlert();
+              }
+            }
+          }
+        ]}
+      />)
+}
+
+function OnDismiss(){
+  debugger;
+  var cookie = GetCookie();
+  if(cookie){
+    GetAlert();
+  }
+}
 export default App;
