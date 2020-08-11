@@ -1,0 +1,4 @@
+[build]
+base = "JALib/"
+publish = "JALib/build/"
+command = "npm run build"
